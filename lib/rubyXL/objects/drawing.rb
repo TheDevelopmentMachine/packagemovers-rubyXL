@@ -165,7 +165,7 @@ module RubyXL
     define_element_name 'xdr:twoCellAnchor'
 
     def rel_id
-      xdr_pic.xdr_blip_fill.a_blip.r_embed
+      xdr_pic && xdr_pic.xdr_blip_fill.a_blip.r_embed
     end
 
     def row
