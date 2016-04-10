@@ -140,8 +140,8 @@ module RubyXL
 
   # http://www.datypic.com/sc/ooxml/e-draw-ssdraw_oneCellAnchor-1.html
   class OneCellAnchor < OOXMLObject
-    define_child_node(RubyXL::AnchorPoint, :node_name => :from)
-    define_child_node(RubyXL::ShapeExtent, :node_name => :ext)
+    define_child_node(RubyXL::AnchorPoint, node_name: 'xdr:from')
+    define_child_node(RubyXL::ShapeExtent, node_name: 'xdr:ext')
     define_child_node(RubyXL::Shape)
     define_child_node(RubyXL::GroupShape)
     define_child_node(RubyXL::GraphicFrame)
@@ -149,19 +149,39 @@ module RubyXL
     define_child_node(RubyXL::Picture)
     define_child_node(RubyXL::ClientData)
     define_element_name 'xdr:oneCellAnchor'
+
+    def rel_id
+      xdr_pic && xdr_pic.xdr_blip_fill.a_blip.r_embed
+    end
+
+    def row
+      xdr_from.xdr_row.value
+    end
+
+    def col
+      xdr_from.xdr_col.value
+    end
+
+    def image_path
+      @image_path
+    end
+
+    def image_path=(path)
+      @image_path = path
+    end
   end
 
   # http://www.datypic.com/sc/ooxml/e-draw-ssdraw_twoCellAnchor-1.html
   class TwoCellAnchor < OOXMLObject
-    define_child_node(RubyXL::AnchorPoint, :node_name => 'xdr:from')
-    define_child_node(RubyXL::AnchorPoint, :node_name => 'xdr:to')
+    define_child_node(RubyXL::AnchorPoint, node_name: 'xdr:from')
+    define_child_node(RubyXL::AnchorPoint, node_name: 'xdr:to')
     define_child_node(RubyXL::Shape)
     define_child_node(RubyXL::GroupShape)
     define_child_node(RubyXL::GraphicFrame)
     define_child_node(RubyXL::ConnectionShape)
     define_child_node(RubyXL::Picture)
     define_child_node(RubyXL::ClientData)
-    define_attribute(:editAs, RubyXL::ST_EditAs, :default => 'twoCell')
+    define_attribute(:editAs, RubyXL::ST_EditAs, default: 'twoCell')
     define_element_name 'xdr:twoCellAnchor'
 
     def rel_id
